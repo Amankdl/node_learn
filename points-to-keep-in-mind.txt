@@ -1,0 +1,21 @@
+1. Never upload node_modules folder to git (it will consume time).
+2. If node_module is not available than run command 'npm init'.
+3. Positioning of app.use (midlleware) is impt. It must be at last of all routes if we are handling 404.html page through it.
+4. Register template engine just after requiring express.
+5. To send data into ejs template just pass a js object with file name in app.js like :-
+
+        app.get('/about', (req, res)=>{
+            res.render('about', {title : 'About'});
+        });
+        
+6. To define variables in ejs template --> <% variable_name = "value" %>        
+7. To print variables in ejs template --> <%= variable_name%>       
+8. To include any partial component <%- include('./../partials/nav.ejs')  %> 
+9. We can have multiple middlewares but order of middleware is very impt in node.
+10. Files publically not available to users. Ex: we can not access to 
+        www.abc.com/style.css or www.abc.com/aman.jpg
+    If we tries to access above links than we will get 404.
+    To make such files available we need to create a folder with name public (or with any other name but than we have to 
+    mention it explicitly in url.)
+    -> For adding external css we need this.
+    app.use(express.static('public'));
