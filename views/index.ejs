@@ -8,9 +8,10 @@
     <!-- <%= name %> -->
     <% if(blogs.length > 0){ %>
     <% blogs.forEach(blog => { %>
-        <h3><%= blog.title %></h3>
+        <a href="/blog/<%= blog._id %>"><h3><%= blog.title %></h3></a>
         <p><%= blog.snippet %></p>
         <p><%= blog.body %></p>
+        <a class="delete" data-doc="<%= blog._id %>">Delete</a>
     <% }) %>
     <% }else{%>
     <p>There is no blog available.</p>
@@ -18,5 +19,21 @@
 
     <%- include('./../partials/footer.ejs')  %>
 </body>
-
+<script>
+    Array.from(document.getElementsByClassName('delete')).forEach(element => {
+        element.addEventListener('click', (e)=>{
+            var endpoint = `/blog/${e.target.dataset.doc}`;
+            fetch(endpoint, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = data.redirect;
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        })
+    })
+</script>
 </html>

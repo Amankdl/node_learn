@@ -4,10 +4,10 @@
 <body>
     <%- include('./../partials/nav.ejs')  %>
     <h1>Create</h1>
-    <form action="">
-        <input type="text" id="" placeholder="Blog Post Title">
-        <input type="text" id="" placeholder="Blog Post Snippet">
-        <textarea id="" placeholder="Blog Content"></textarea>
+    <form action="/blog" method="POST">
+        <input type="text" id="title" name="title" placeholder="Blog Post Title">
+        <input type="text" id="snippet" name="snippet" placeholder="Blog Post Snippet">
+        <textarea id="" id="body" name="body" placeholder="Blog Content"></textarea>
         <button type="submit">Submit</button>
     </form>
     <%- include('./../partials/footer.ejs')  %>

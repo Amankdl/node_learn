@@ -4,6 +4,10 @@ const Blog = require('./models/blog');
 
 const app = express();
 
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
+app.use(express.urlencoded({extended: true}));
+
 // Connect to mongodb
 const dbURI = "mongodb+srv://amankdl:qwertypoi@learnnode.0wehc.mongodb.net/learnnode?retryWrites=true&w=majority";
 mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
@@ -16,7 +20,6 @@ mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
 .catch((error)=>{
     console.log(error);
 });
-app.set('view engine', 'ejs');
 
 /**
  * 
@@ -28,8 +31,6 @@ app.set('view engine', 'ejs');
 // app.listen(3000, ()=>{
 //     console.log("Server started");
 // });
-
-app.use(express.static('public'));
 
 // app.use((req, res, next)=>{
 //     console.log("New request made.");
@@ -48,6 +49,29 @@ app.use(express.static('public'));
 //     console.log("In 2nd middleware.");
 //     next();
 // });
+
+app.post('/blog', (req, res)=>{
+    const blog = new Blog(req.body);
+
+    blog.save()
+    .then((result)=>{
+        res.redirect('/');
+    })
+    .catch((error)=>{
+        res.send(error);
+    })
+});
+
+app.delete('/blog/:id', (req, res)=>{
+    const id = req.params.id;
+    Blog.findByIdAndDelete(id)
+    .then(result => {
+        res.json({redirect: '/'});
+    })
+    .catch(error => {
+        console.log(error);
+    });
+});
 
 app.get('/', (req, res)=>{
     // res.send("<h1>Plain text or html text</h1>"); 
@@ -94,42 +118,54 @@ app.get('/blog/create', (req, res)=>{
     res.render('create', {title : 'Create Blog Post'});
 });
 
+app.get('/blog/:id', (req, res)=>{
+    var id = req.params.id;
+    Blog.findById(id)
+    .then((result)=>{
+        res.render('details', {result});
+        // res.send(result);
+    })
+    .catch((error)=>{
+        console.log(error);
+    })
+})
+
 // mongoose and mongo-db routes
-app.get('/add-blog', (req, res)=>{
-    const blog = new Blog({
-        title: 'New Blog 02',
-        snippet: 'New blog snippet 02',
-        body: 'New Blog2 body'
-    });
+// app.get('/add-blog', (req, res)=>{
+//     const blog = new Blog({
+//         title: 'New Blog 02',
+//         snippet: 'New blog snippet 02',
+//         body: 'New Blog2 body'
+//     });
 
-    blog.save()
-    .then((result)=>{
-        res.send(result);
-    })
-    .catch((error)=>{
-        res.send(error);
-    })
-});
+//     blog.save()
+//     .then((result)=>{
+//         res.send(result);
+//     })
+//     .catch((error)=>{
+//         res.send(error);
+//     })
+// });
 
-app.get('/all-blogs', (req, res)=>{
-    Blog.find()
-    .then((result)=>{
-        res.send(result);
-    })
-    .catch((error)=>{
-        console.log(error);
-    })
-});
+// app.get('/all-blogs', (req, res)=>{
+//     Blog.find()
+//     .then((result)=>{
+//         res.send(result);
+//     })
+//     .catch((error)=>{
+//         console.log(error);
+//     })
+// });
 
-app.get('/single-blog', (req, res)=>{
-    Blog.findById('6174021575c4101159b77af0')
-    .then((result)=>{
-        res.send(result);
-    })
-    .catch((error)=>{
-        console.log(error);
-    })
-});
+// app.get('/single-blog', (req, res)=>{
+//     Blog.findById('6174021575c4101159b77af0')
+//     .then((result)=>{
+//         res.send(result);
+//     })
+//     .catch((error)=>{
+//         console.log(error);
+//     })
+// });
 
 //404 Page  **Positioning of app.use (middleware) keep in mind.
 app.use((req, res) => {

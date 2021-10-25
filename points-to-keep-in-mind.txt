@@ -19,3 +19,5 @@
     mention it explicitly in url.)
     -> For adding external css we need this.
     app.use(express.static('public'));
+
+11. app.use(express.urlencoded({extended: true}));  --> this middleware is required to handle POST body data.
