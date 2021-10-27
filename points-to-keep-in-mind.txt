@@ -1,5 +1,5 @@
 1. Never upload node_modules folder to git (it will consume time).
-2. If node_module is not available than run command 'npm init'.
+2. If node_module is not available than run command 'npm install'.
 3. Positioning of app.use (midlleware) is impt. It must be at last of all routes if we are handling 404.html page through it.
 4. Register template engine just after requiring express.
 5. To send data into ejs template just pass a js object with file name in app.js like :-
