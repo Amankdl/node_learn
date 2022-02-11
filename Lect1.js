@@ -15,6 +15,8 @@
 // console.log('Directory name : ',__dirname);
 // console.log('File name : ', __filename);
 
+// We can not use document object related methods in node js as they are of no use.
+
 // requiring module
 // ********************
 
